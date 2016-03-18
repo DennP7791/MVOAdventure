@@ -3,8 +3,6 @@ using System.Collections;
 
 public class HouseExit1 : MonoBehaviour {
 
-    private float speed = 10f;
-
     // Use this for initialization
     void Start () {
 	

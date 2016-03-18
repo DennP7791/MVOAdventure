@@ -21,7 +21,7 @@ public class GameManager : MonoBehaviour {
 
     private int enemyDmg;
     private int playerDmg;
-    private float enemyAttackDelay = 1f;
+    private float enemyAttackDelay = 2f;
     private float nextAttack;
 
     private float gameOverDelay = 2f;
@@ -36,11 +36,20 @@ public class GameManager : MonoBehaviour {
     private GameObject mapCam;
     private GameObject battleCam;
     private GameObject combatEnemy;
+    private GameObject dogText;
     private LevelManager levelManager;
 
     private Text playerHPText;
     private Text enemyHPText;
     private Text combatText;
+
+    //Stats
+    private Text healthText;
+    private Text manaText;
+    private Text amorText;
+    private Text xpText;
+    private Text minDamageText;
+    private Text maxDamageText;
 
     public static GameManager instance = null;
 
@@ -72,11 +81,13 @@ public class GameManager : MonoBehaviour {
         mainCam.SetActive(false);
         mapCam.SetActive(false);
         battleCam.SetActive(true);
+        dogText.SetActive(false);
         UpdateCombatUI();
     }
 
     void EndCombat()
     {
+        dogText.SetActive(true);
         inCombat = false;
         playerTurn = true;
         combatUI.SetActive(false);
@@ -121,6 +132,7 @@ public class GameManager : MonoBehaviour {
     public void RunAway()
     {
         playerXp -= 1;
+        dogText.SetActive(true);
         EndCombat();      
     }
 
@@ -131,6 +143,7 @@ public class GameManager : MonoBehaviour {
         playerMinDmg = 5 + playerXp / 2;
         playerMaxDmg = playerMinDmg * 2;
         playerArmor = 1 + playerXp / 4;
+        setStats();
     }
 
     void GameOver()
@@ -155,9 +168,11 @@ public class GameManager : MonoBehaviour {
         playerHPText = GameObject.Find("PlayerHP").GetComponent<Text>();
         enemyHPText = GameObject.Find("EnemyHP").GetComponent<Text>();
         combatText = GameObject.Find("CombatText").GetComponent<Text>();
+        dogText = GameObject.Find("DogInfo");
         gameOverImage.SetActive(false);
         combatUI.SetActive(false);
         battleCam.SetActive(false);
+        dogText.SetActive(true);
     }
 
     void UpdateCombatUI()
@@ -174,6 +189,7 @@ public class GameManager : MonoBehaviour {
             combatText.text = "You have slain the enemy!";
             playerXp += enemyXp;
             Invoke("EndCombat", delay);
+            
         }
         else if (playerHP == playerCurrentHP && enemyHP == enemyCurrentHP)
             combatText.text = "";
@@ -181,5 +197,23 @@ public class GameManager : MonoBehaviour {
             combatText.text = "You hit the enemy for " + playerDmg + " damage!";
         else if (!playerTurn)
             combatText.text = "Enemy hits you for " + enemyDmg + " damage!";
+    }
+
+    //Sets the text 
+    void setStats()
+    {
+        healthText = GameObject.Find("hText").GetComponent<Text>();
+        manaText = GameObject.Find("mText").GetComponent<Text>();
+        amorText = GameObject.Find("aText").GetComponent<Text>();
+        xpText = GameObject.Find("xText").GetComponent<Text>();
+        minDamageText = GameObject.Find("minDText").GetComponent<Text>();
+        maxDamageText = GameObject.Find("maxDText").GetComponent<Text>();
+
+        healthText.text = "" + playerHP;
+        manaText.text = " - ";
+        amorText.text = "" + playerArmor;
+        xpText.text = "" + playerXp;
+        minDamageText.text = "" + playerMinDmg;
+        maxDamageText.text = "" + playerMaxDmg;
     }
 }

@@ -3,9 +3,6 @@ using System.Collections;
 
 public class ShopExit1 : MonoBehaviour {
 
-    private float speed = 10f;
-    
-
     // Use this for initialization
     void Start () {
 	

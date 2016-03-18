@@ -6,7 +6,6 @@ public class DogManager : MonoBehaviour {
 
     private Vector3 player;
     private Vector2 playerdirection;
-    private Rigidbody2D rb2D;
     private float x;
     private float y;
     public float speed;
@@ -16,13 +15,11 @@ public class DogManager : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        rb2D = GetComponent<Rigidbody2D>();
-        
+        dogInfo = GameObject.Find("DogInfo").GetComponent<Text>();
     }
 
     // Update is called once per frame
     void Update() {
-        dogInfo = GameObject.Find("DogInfo").GetComponent<Text>();
         if (Input.GetKeyDown(KeyCode.Q))
         {
             DogStay();
